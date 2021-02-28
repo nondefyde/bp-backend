@@ -26,13 +26,13 @@ export default () => {
 	const createdUsers = [];
 	seedData.forEach(async (data, index) => {
 		let auth = await Auth.findOneAndUpdate({
-			publicId: data._id,
+			uuid: data._id,
 			username: data.username
 		}, {
 			username: data.username,
 			password: bcrypt.hashSync(data.password),
 			$setOnInsert: {
-				publicId: data._id
+				uuid: data._id
 			}
 		}, {upsert: true, new: true, setDefaultsOnInsert: true});
 

@@ -3,13 +3,14 @@ import config from 'config';
 import lang from '../lang';
 import AppError from '../lib/app-error';
 import {UNAUTHORIZED} from '../utils/constants';
+import Auth from '../api/auth/auth.model.js';
 
 export default (req, res, next) => {
-	const token = req.body.token || req.query.token || req.headers['x-access-token'];
+	const token = req.headers['authorization'];
 	// decode token
-	if (token) {
+	if (token && token.split(' ').length > 0) {
 		// verifies secret and checks exp
-		jwt.verify(token, config.get('auth.encryption_key'), async (err, decoded) => {
+		jwt.verify(token.split(' ')[1], config.get('app.superSecret'), async (err, decoded) => {
 			if (err) {
 				let message = '';
 				if (err.name) {
@@ -23,11 +24,16 @@ export default (req, res, next) => {
 				return next(appError);
 			} else {
 				req.authId = decoded.authId;
+				const auth = await Auth.findById(req.authId);
+				if (!auth) {
+					const appError = new AppError(lang.get('auth').invalid_user_access, UNAUTHORIZED);
+					return next(appError);
+				}
 				next();
 			}
 		});
 	} else {
-		const appError = new AppError(lang.get('auth').AUTH100, UNAUTHORIZED);
+		const appError = new AppError(lang.get('auth').invalid_user_access, UNAUTHORIZED);
 		return next(appError);
 	}
 };

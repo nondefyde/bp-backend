@@ -37,7 +37,8 @@ const AuthProcessor = {
 	async signToken(auth, user) {
 		const obj = {
 			authId: auth._id,
-			...(_.pick(user, ['email', 'firstName', 'lastName']))
+			uuid: auth.publicId,
+			...(_.pick(user, ['username', 'firstName', 'lastName']))
 		};
 		return jwt.sign(obj, config.get('app.superSecret'),
 			{expiresIn: config.get('api.expiresIn')});

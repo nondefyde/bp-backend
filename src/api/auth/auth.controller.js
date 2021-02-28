@@ -31,7 +31,7 @@ const AuthController = {
 				return next(canLogin);
 			}
 			const user = await UserProcessor.getUser(auth._id, obj, session);
-			const token = await AuthProcessor.signToken({auth, user});
+			const token = await AuthProcessor.signToken(auth, user);
 			const response = await AuthProcessor.getResponse({
 				token,
 				model: Auth,

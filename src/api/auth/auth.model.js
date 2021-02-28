@@ -5,7 +5,7 @@ import mongoose, {Schema} from 'mongoose';
  * Auth Schema
  */
 const AuthModel = new Schema({
-	publicId: {
+	uuid: {
 		type: String,
 		unique: true,
 		index: true

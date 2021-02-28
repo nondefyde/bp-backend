@@ -2,6 +2,7 @@ export default {
 	auth: {
 		credential_incorrect: 'Username or password is not correct',
 		authentication_failed: 'Authentication Failed! Wrong username or password',
+		invalid_user_access: 'Could not authenticate user',
 		inputs: 'Bad input error',
 	},
 	error: {
