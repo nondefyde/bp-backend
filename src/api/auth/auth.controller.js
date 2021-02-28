@@ -15,17 +15,17 @@ const AuthController = {
 	 * @param {Function} next The callback to the next program handler
 	 * @return {Object} res The response object
 	 */
-	async signIn(req, res, next) {
+	async login(req, res, next) {
 		let session;
 		try {
 			session = await mongoose.startSession();
 			await session.startTransaction();
 			const obj = req.body;
-			const validator = await AuthValidation.signIn(obj);
+			const validator = await AuthValidation.login(obj);
 			if (!validator.passed) {
 				return next(new AppError(lang.get('error').inputs, BAD_REQUEST, validator.errors));
 			}
-			const auth = await Auth.findOne({email: obj.email}).select('+password');
+			const auth = await Auth.findOne({username: obj.username}).select('+password');
 			const canLogin = await AuthProcessor.canLogin(auth, obj);
 			if (canLogin instanceof AppError) {
 				return next(canLogin);
@@ -38,7 +38,7 @@ const AuthController = {
 				code: OK,
 				value: {
 					...auth.toJSON(),
-					user: _.pick(user, ['email', 'displayName', 'firstName', 'lastName', 'mobile', 'avatar'])
+					user: _.pick(user, ['username', 'firstName', 'lastName', 'role'])
 				}
 			});
 			await session.commitTransaction();

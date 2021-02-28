@@ -1,8 +1,8 @@
 export default {
 	auth: {
-		credential_incorrect: 'Email or password is not correct',
-		authentication_failed: 'Authentication Failed! Wrong email or password',
-		email_exist: 'Email already exist',
+		credential_incorrect: 'Username or password is not correct',
+		authentication_failed: 'Authentication Failed! Wrong username or password',
+		inputs: 'Bad input error',
 	},
 	error: {
 		server: 'Error in setup interaction',

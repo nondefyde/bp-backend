@@ -1,10 +1,9 @@
 import {Router} from 'express';
-import auth from '../../middleware/auth';
 import Auth from './auth.controller';
 
 const router = Router();
 
-router.post('/signIn', Auth.signIn);
+router.post('/signIn', Auth.login);
 
 export default router;
 

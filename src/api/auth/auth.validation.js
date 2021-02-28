@@ -8,9 +8,9 @@ const AuthValidation = {
 	 * @param {Object} body The object to validate
 	 * @return {Object} Validator
 	 */
-	async signIn(body = {}) {
+	async login(body = {}) {
 		const rules = {
-			email: 'required|email',
+			username: 'required|string',
 			password: 'required|min:6'
 		};
 		const validator = new Validator(body, rules);

@@ -18,7 +18,7 @@ export default async (app) => {
 	// check if api key is present
 	app.use(prefix, apiAuth);
 	// load version 1 routes
-	app.use('/api/v1', apiV1);
+	app.use('/v1', apiV1);
 	// check url for state codes and api version
 	app.use((req, res, next) => {
 		const err = new Error('Not Found');
