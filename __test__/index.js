@@ -1,7 +1,6 @@
 import config from 'config';
 import apiAuth from '../src/middleware/api';
 import errorHandler from '../src/middleware/errors';
-import Q from 'q';
 import apiV1 from '../src/api';
 import AppError from '../src/lib/app-error';
 import { NOT_FOUND } from '../src/utils/constants';
@@ -26,5 +25,5 @@ export default async (app) => {
 		return next(new AppError('not found', NOT_FOUND));
 	});
 	app.use(errorHandler);
-	return Q.resolve(app);
+	return Promise.resolve(app);
 };

@@ -1,13 +1,13 @@
-import Auth from '../../../../src/rest/auth/auth.model';
+import Auth from '../../../src/api/auth/auth.model';
 // Require the dev-dependencies
 import chai from 'chai';
 import supertest from 'supertest';
-import app from '../../../app';
+import app from '../../app';
 import { after, before, describe } from 'mocha';
-import { getUserObject } from '../../../_seeds/user.seed';
-import { LOGIN_URL, TEST_API_KEY } from '../../routes';
-import { BAD_REQUEST, OK, UNAUTHORIZED, NOT_FOUND } from '../../../../src/utils/constants';
-import { EmptyAuthCollections } from '../../../util';
+import { getUserObject } from '../../_seeds/user.seed';
+import { LOGIN_URL, TEST_API_KEY } from '../routes';
+import { BAD_REQUEST, OK, UNAUTHORIZED, NOT_FOUND } from '../../../src/utils/constants';
+import { EmptyAuthCollections } from '../../util';
 
 let should = chai.should();
 let server;
@@ -25,7 +25,7 @@ describe('Setup For Login Test', () => {
 	describe('Login Endpoint Test ' + LOGIN_URL, () => {
 		it('Should test login a main that does not exist or not registered', async () => {
 			const response = await server.post(LOGIN_URL)
-				.send({ email: 'test@gmail.com', password: 'fakepassword' })
+				.send({ username: 'test@gmail.com', password: 'fakepassword' })
 				.set('x-api-key', TEST_API_KEY)
 				.expect('Content-type', /json/)
 				.expect(NOT_FOUND);
@@ -36,7 +36,7 @@ describe('Setup For Login Test', () => {
 		});
 		it('Should test login with invalid main login details', async () => {
 			const response = await server.post(LOGIN_URL)
-				.send({ email: getUserObject().email, password: 'fakepassword' })
+				.send({ username: getUserObject().username, password: 'fakepassword' })
 				.set('x-api-key', TEST_API_KEY)
 				.expect('Content-type', /json/)
 				.expect(UNAUTHORIZED);
@@ -58,7 +58,7 @@ describe('Setup For Login Test', () => {
 		});
 		it('Should login an existing main with valid details', async () => {
 			const response = await server.post(LOGIN_URL)
-				.send({ email: getUserObject().email, password: getUserObject().password })
+				.send({ username: getUserObject().username, password: getUserObject().password })
 				.set('x-api-key', TEST_API_KEY)
 				.expect('Content-type', /json/)
 				.expect(OK);

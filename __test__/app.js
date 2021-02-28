@@ -7,7 +7,6 @@ import logger from 'morgan';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import Q from 'q';
 import intiDatabase from './database';
 import mongoose from 'mongoose';
 
@@ -29,7 +28,7 @@ export default intiDatabase()
 		console.log('TEST mongodb url ', process.env.DB_TEST_URL);
 		const result = await mongoose.connection.db.dropDatabase();
 		console.log(`${result} datebase torn down`);
-		return Q.resolve(true);
+		return Promise.resolve(true);
 	})
 	.then(() => loadRoutes(app))
 	.then(async (app) => {
@@ -39,7 +38,7 @@ export default intiDatabase()
 	\tTest Application listening on ${config.get('app.baseUrl')}\n
 	\tEnvironment => ${config.util.getEnv('NODE_ENV')} ${server}\n
 	\tDate: ${new Date()}`);
-		return Q.resolve(app);
+		return Promise.resolve(app);
 	}, err => {
 		console.log('There was an un catch error : ');
 		console.error(err);
